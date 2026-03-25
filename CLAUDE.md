@@ -38,7 +38,7 @@ Single-script ETL pipeline:
 
 1. **Load** `group_scoring.csv` → round name → point value mapping
 2. **Load** `winners.csv` → `(Round, Winner)` lookup dict for actual results
-3. **Score** each `bracket_*.csv` via glob — accumulate points for matching predictions
+3. **Score** each `brackets/*.csv` via glob — accumulate points for matching predictions
 4. **Output** `standings.csv` (ranked results) and print leaderboard to console
 
 ### `simulate_outcomes.py`
@@ -59,8 +59,8 @@ Exhaustive scenario simulation using NumPy vectorization:
 |------|---------|
 | `group_scoring.csv` | Points per round: 1, 2, 4, 8, 16, 32 (Round of 64 → National Final) |
 | `winners.csv` | Actual tournament results (63 games) |
-| `bracket_*.csv` | User prediction files (40 total) — same schema as `winners.csv` with a "Predicted Winner" column |
+| `brackets/*.csv` | User prediction files (40 total) — same schema as `winners.csv` with a "Predicted Winner" column |
 | `standings.csv` | Generated output — rank, filename, score |
 | `simulation_results.csv` | Generated output — expected rank and placement counts across all 32,768 scenarios |
 
-Adding a new participant: drop a new `bracket_<name>.csv` file and re-run the scripts.
+Adding a new participant: drop a new CSV file in the `brackets/` directory and re-run the scripts.

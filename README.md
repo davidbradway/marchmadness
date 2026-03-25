@@ -34,10 +34,10 @@ Requires `numpy`.
 |------|---------|
 | `group_scoring.csv` | Points per round: 1, 2, 4, 8, 16, 32 (Round of 64 → National Final) |
 | `winners.csv` | Actual tournament results (63 games) |
-| `bracket_*.csv` | User prediction files (40 total) |
+| `brackets/*.csv` | User prediction files (40 total) |
 | `standings.csv` | Generated — rank, bracket name, score |
 | `simulation_results.csv` | Generated — expected rank and placement counts across all scenarios |
 
 ## Adding a Participant
 
-Drop a new `bracket_<name>.csv` file (same schema as existing bracket files) and re-run the scripts.
+Drop a new CSV file in the `brackets/` directory (same schema as existing bracket files) and re-run the scripts.
