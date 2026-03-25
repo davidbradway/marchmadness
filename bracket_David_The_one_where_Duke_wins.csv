@@ -1,0 +1,64 @@
+Region,Round,Team 1 Seed,Team 1,Team 2 Seed,Team 2,Predicted Winner
+East,Round of 64,1,Duke,16,Siena,Duke
+East,Round of 64,8,Ohio St.,9,TCU,TCU
+East,Round of 64,5,St. John's,12,Northern Iowa,St. John's
+East,Round of 64,4,Kansas,13,California Baptist,Kansas
+East,Round of 64,6,Louisville,11,South Florida,Louisville
+East,Round of 64,3,Michigan St.,14,N. Dak. St.,Michigan St.
+East,Round of 64,7,UCLA,10,UCF,UCF
+East,Round of 64,2,Connecticut,15,Furman,Connecticut
+East,Round of 32,1,Duke,9,TCU,Duke
+East,Round of 32,5,St. John's,4,Kansas,St. John's
+East,Round of 32,6,Louisville,3,Michigan St.,Michigan St.
+East,Round of 32,10,UCF,2,Connecticut,Connecticut
+East,Round of 16,1,Duke,5,St. John's,Duke
+East,Round of 16,3,Michigan St.,2,Connecticut,Michigan St.
+East,Round of 8,1,Duke,3,Michigan St.,Duke
+South,Round of 64,1,Florida,16,Prairie View A&M,Florida
+South,Round of 64,8,Clemson,9,Iowa,Clemson
+South,Round of 64,5,Vanderbilt,12,McNeese,Vanderbilt
+South,Round of 64,4,Nebraska,13,Troy,Nebraska
+South,Round of 64,6,N. Carolina,11,VCU,VCU
+South,Round of 64,3,Illinois,14,Pennsylvania,Illinois
+South,Round of 64,7,St. Mary's,10,Texas A&M,Texas A&M
+South,Round of 64,2,Houston,15,Idaho,Houston
+South,Round of 32,1,Florida,8,Clemson,Florida
+South,Round of 32,5,Vanderbilt,4,Nebraska,Nebraska
+South,Round of 32,11,VCU,3,Illinois,Illinois
+South,Round of 32,10,Texas A&M,2,Houston,Houston
+South,Round of 16,1,Florida,4,Nebraska,Florida
+South,Round of 16,3,Illinois,2,Houston,Houston
+South,Round of 8,1,Florida,2,Houston,Florida
+West,Round of 64,1,Arizona,16,LIU Brooklyn,Arizona
+West,Round of 64,8,Villanova,9,Utah St.,Villanova
+West,Round of 64,5,Wisconsin,12,High Point,Wisconsin
+West,Round of 64,4,Arkansas,13,Hawaii,Arkansas
+West,Round of 64,6,BYU,11,Texas,BYU
+West,Round of 64,3,Gonzaga,14,Kennesaw St.,Gonzaga
+West,Round of 64,7,Miami (FL),10,Missouri,Miami (FL)
+West,Round of 64,2,Purdue,15,Queens University,Purdue
+West,Round of 32,1,Arizona,8,Villanova,Arizona
+West,Round of 32,5,Wisconsin,4,Arkansas,Wisconsin
+West,Round of 32,6,BYU,3,Gonzaga,Gonzaga
+West,Round of 32,7,Miami (FL),2,Purdue,Purdue
+West,Round of 16,1,Arizona,5,Wisconsin,Arizona
+West,Round of 16,3,Gonzaga,2,Purdue,Purdue
+West,Round of 8,1,Arizona,2,Purdue,Arizona
+Midwest,Round of 64,1,Michigan,16,Howard,Michigan
+Midwest,Round of 64,8,Georgia,9,Saint Louis,Saint Louis
+Midwest,Round of 64,5,Texas Tech,12,Akron,Texas Tech
+Midwest,Round of 64,4,Alabama,13,Hofstra,Hofstra
+Midwest,Round of 64,6,Tennessee,11,Miami (OH),Tennessee
+Midwest,Round of 64,3,Virginia,14,Wright St.,Virginia
+Midwest,Round of 64,7,Kentucky,10,Santa Clara,Kentucky
+Midwest,Round of 64,2,Iowa St.,15,Tennessee St.,Iowa St.
+Midwest,Round of 32,1,Michigan,9,Saint Louis,Michigan
+Midwest,Round of 32,5,Texas Tech,13,Hofstra,Texas Tech
+Midwest,Round of 32,6,Tennessee,3,Virginia,Tennessee
+Midwest,Round of 32,7,Kentucky,2,Iowa St.,Iowa St.
+Midwest,Round of 16,1,Michigan,5,Texas Tech,Michigan
+Midwest,Round of 16,6,Tennessee,2,Iowa St.,Iowa St.
+Midwest,Round of 8,1,Michigan,2,Iowa St.,Iowa St.
+Final Four,Round of 4,1,Duke,1,Florida,Duke
+Final Four,Round of 4,1,Arizona,2,Iowa St.,Arizona
+Championship,National Final,,Duke,,,Duke
