@@ -24,7 +24,7 @@ with open('winners.csv', newline='', encoding='utf-8') as f:
 
 # Score each bracket file
 results = []
-for path in sorted(glob.glob('bracket_*.csv')):
+for path in sorted(glob.glob('brackets/*.csv')):
     filename = os.path.basename(path)
     score = 0
     with open(path, newline='', encoding='utf-8') as f:

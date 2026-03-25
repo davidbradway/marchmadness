@@ -22,7 +22,7 @@ with open('winners.csv', newline='', encoding='utf-8') as f:
     for row in csv.DictReader(f):
         actual_winners[(row['Round'].strip(), row['Winner'].strip())] = True
 
-bracket_files = sorted(glob.glob('bracket_*.csv'))
+bracket_files = sorted(glob.glob('brackets/*.csv'))
 bracket_names = [os.path.basename(p) for p in bracket_files]
 N = len(bracket_files)
 
