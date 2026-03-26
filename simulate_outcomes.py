@@ -83,35 +83,15 @@ game_points = np.array(
 )  # (15,)
 
 # ---------------------------------------------------------------------------
-# 2.5. Team strengths and win-probability matrix
+# 2.5. Win-probability matrix (seed-based)
 #
-#  Two modes (priority order):
-#
-#  1. team_strengths.csv  (columns: Team, Strength)
-#     "Strength" can be any rating where higher = better, e.g. KenPom AdjEM.
-#     Win prob uses a logistic model:
-#       P(A beats B) = 1 / (1 + exp(-(str_A - str_B) / STRENGTH_SCALE))
-#     STRENGTH_SCALE = 10 is calibrated for KenPom AdjEM units (a 10-pt AdjEM
-#     edge corresponds to ~75% win probability on a neutral court).
-#
-#     To create this file, visit barttorvik.com or kenpom.com and add a row per
-#     team, e.g.:
-#       Team,Strength
-#       Duke,32.1
-#       Connecticut,27.4
-#       ...
-#
-#  2. Seed-based fallback (no external file needed)
-#     Seeds are read automatically from winners.csv (Round of 64 rows).
-#     Win prob:  P(A beats B) = seed_B^k / (seed_A^k + seed_B^k)
-#     k = SEED_K = 0.80  (calibrated to NCAA tournament historical data)
-#     Example: Duke (1) vs St. John's (5) → P(Duke) ≈ 78%
+#   Seeds are read from winners.csv (Round of 64 rows).
+#   P(A beats B) = seed_B^k / (seed_A^k + seed_B^k),  k = 0.80
+#   Example: Duke (1) vs St. John's (5) → P(Duke) ≈ 78%
 # ---------------------------------------------------------------------------
 
-SEED_K        = 0.80   # seed-model exponent; raise to penalise upsets more
-STRENGTH_SCALE = 10.0  # logistic scale for custom-strength model
+SEED_K = 0.80  # exponent; raise to penalise upsets more strongly
 
-# Build seed map from Round of 64 data (all 64 original teams)
 seed_map = {}
 with open('winners.csv', newline='', encoding='utf-8') as f:
     for row in csv.DictReader(f):
@@ -122,43 +102,21 @@ with open('winners.csv', newline='', encoding='utf-8') as f:
             except (ValueError, KeyError):
                 pass
 
-# Optionally load custom team strengths
-strength_map = {}
-if os.path.exists('team_strengths.csv'):
-    with open('team_strengths.csv', newline='', encoding='utf-8') as f:
-        for row in csv.DictReader(f):
-            try:
-                strength_map[row['Team'].strip()] = float(row['Strength'].strip())
-            except (ValueError, KeyError):
-                pass
-    print(f"Loaded team_strengths.csv ({len(strength_map)} teams).")
-
-# Build 16×16 win-probability matrix  prob_matrix[i, j] = P(team i beats team j)
-if strength_map:
-    team_strengths = np.array(
-        [strength_map.get(t, 0.0) for t in all_s16_teams], dtype=np.float64
-    )
-    diff = team_strengths[:, np.newaxis] - team_strengths[np.newaxis, :]  # (16,16)
-    prob_matrix = 1.0 / (1.0 + np.exp(-diff / STRENGTH_SCALE))
-    strength_source = f"team_strengths.csv  (logistic, scale={STRENGTH_SCALE})"
-else:
-    seeds = np.array(
-        [seed_map.get(t, 8) for t in all_s16_teams], dtype=np.float64
-    )
-    s_pow = seeds ** SEED_K
-    # prob_matrix[i,j] = P(i beats j) = seed_j^k / (seed_i^k + seed_j^k)
-    prob_matrix = s_pow[np.newaxis, :] / (s_pow[:, np.newaxis] + s_pow[np.newaxis, :])
-    strength_source = f"seed-based model  (k={SEED_K})"
-
-np.fill_diagonal(prob_matrix, 0.5)  # self-play is irrelevant; set to 0.5
+seeds = np.array(
+    [seed_map.get(t, 8) for t in all_s16_teams], dtype=np.float64
+)
+s_pow = seeds ** SEED_K
+# prob_matrix[i, j] = P(team i beats team j) = seed_j^k / (seed_i^k + seed_j^k)
+prob_matrix = s_pow[np.newaxis, :] / (s_pow[:, np.newaxis] + s_pow[np.newaxis, :])
+np.fill_diagonal(prob_matrix, 0.5)
 
 # Display win probabilities for the known Sweet 16 matchups
-print(f"\nWin probabilities  [{strength_source}]:")
-print(f"  {'Game':<5} {'Team 1':<16} vs {'Team 2':<16}  P(T1 wins)")
-print(f"  {'-'*57}")
-for i, (_, region, _, t1, t2) in enumerate(SWEET16):
+print(f"Win probabilities  [seed-based model, k={SEED_K}]:")
+print(f"  {'Team 1':<16} vs {'Team 2':<16}  P(T1 wins)")
+print(f"  {'-'*50}")
+for _, _, _, t1, t2 in SWEET16:
     p = prob_matrix[team_to_id[t1], team_to_id[t2]]
-    print(f"  S16   {t1:<16}    {t2:<16}  {p:.1%}")
+    print(f"  {t1:<16}    {t2:<16}  {p:.1%}")
 
 # ---------------------------------------------------------------------------
 # 3. Enumerate all 2^15 = 32,768 scenarios
@@ -340,7 +298,7 @@ for r in range(1, N + 1):
 
 # --- Print results ---
 print(f"\nSimulated {32768} possible tournament outcomes across {N} brackets.")
-print(f"Placements weighted by scenario likelihood  [{strength_source}].\n")
+print(f"Placements weighted by scenario likelihood  [seed-based, k={SEED_K}].\n")
 
 header = f"{'Bracket':<52} {'CurPts':>6}  {'P(1st)':>7}  {'P(2nd)':>7}  {'Best':>5}  {'ExpRk':>6}"
 print(header)
