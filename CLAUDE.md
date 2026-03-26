@@ -47,11 +47,13 @@ Exhaustive scenario simulation using NumPy vectorization:
 
 1. **Load** current scores from all brackets (same logic as `score_brackets.py`)
 2. **Define** the 15 future games: Sweet 16 (8), Elite 8 (4), Final Four (2), Championship (1)
-3. **Enumerate** all 2^15 = 32,768 possible outcomes as a bit matrix
-4. **Parse** each bracket's predictions for all 15 future games
-5. **Score** all scenarios × brackets simultaneously via matrix operations
-6. **Rank** brackets within each scenario (ties share the lowest rank)
-7. **Output** placement counts, expected rank, and best-case finish per bracket to console and `simulation_results.csv`
+3. **Build** a 16×16 win-probability matrix from seeds read out of `winners.csv`: P(A beats B) = seed_B^0.8 / (seed_A^0.8 + seed_B^0.8)
+4. **Enumerate** all 2^15 = 32,768 possible outcomes as a bit matrix
+5. **Weight** each scenario by the product of its 15 per-game win probabilities (path-consistent through the bracket)
+6. **Parse** each bracket's predictions for all 15 future games
+7. **Score** all scenarios × brackets simultaneously via matrix operations
+8. **Rank** brackets within each scenario (ties share the lowest rank)
+9. **Output** probability-weighted placement probabilities, expected rank, and best-case finish per bracket to console and `simulation_results.csv`
 
 ## Data Files
 
@@ -61,6 +63,6 @@ Exhaustive scenario simulation using NumPy vectorization:
 | `winners.csv` | Actual tournament results (63 games) |
 | `brackets/*.csv` | User prediction files (40 total) — same schema as `winners.csv` with a "Predicted Winner" column |
 | `standings.csv` | Generated output — rank, filename, score |
-| `simulation_results.csv` | Generated output — expected rank and placement counts across all 32,768 scenarios |
+| `simulation_results.csv` | Generated output — expected rank and probability-weighted placement probabilities across all 32,768 scenarios |
 
 Adding a new participant: drop a new CSV file in the `brackets/` directory and re-run the scripts.

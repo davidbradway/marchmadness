@@ -18,7 +18,7 @@ No external dependencies — standard library only (`csv`, `os`, `glob`).
 
 ### `simulate_outcomes.py` — Outcome Simulation
 
-Enumerates all 2^15 = 32,768 possible outcomes for the 15 remaining games (Sweet 16 through Championship), scores every bracket in every scenario, and reports each participant's best-case finish, first/second-place counts, and expected rank.
+Enumerates all 2^15 = 32,768 possible outcomes for the 15 remaining games (Sweet 16 through Championship), scores every bracket in every scenario, and reports each participant's probability of finishing 1st or 2nd, best-case finish, and expected rank. Scenarios are weighted by likelihood using a seed-based win-probability model: P(A beats B) = seed_B^0.8 / (seed_A^0.8 + seed_B^0.8).
 
 ```bash
 python simulate_outcomes.py
@@ -36,7 +36,7 @@ Requires `numpy`.
 | `winners.csv` | Actual tournament results (63 games) |
 | `brackets/*.csv` | User prediction files (40 total) |
 | `standings.csv` | Generated — rank, bracket name, score |
-| `simulation_results.csv` | Generated — expected rank and placement counts across all scenarios |
+| `simulation_results.csv` | Generated — expected rank and probability-weighted placement probabilities across all scenarios |
 
 ## Adding a Participant
 
