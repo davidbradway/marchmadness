@@ -3,40 +3,23 @@ import glob
 import os
 import numpy as np
 
+from tournament import load_point_values, load_actual_winners, load_seed_map, load_all_scores
+
 # ---------------------------------------------------------------------------
 # 1. Load current (already-scored) state
 # ---------------------------------------------------------------------------
 
-point_values = {}
-with open('group_scoring.csv', newline='', encoding='utf-8') as f:
-    for row in csv.DictReader(f):
-        rnd = row['Round'].strip()
-        pts = row['Correct Picks'].strip().replace(' pts', '').replace(' pt', '')
-        try:
-            point_values[rnd] = int(pts)
-        except ValueError:
-            pass
-
-actual_winners = {}
-with open('winners.csv', newline='', encoding='utf-8') as f:
-    for row in csv.DictReader(f):
-        actual_winners[(row['Round'].strip(), row['Winner'].strip())] = True
+point_values   = load_point_values()
+actual_winners = load_actual_winners()
 
 bracket_files = sorted(glob.glob('brackets/*.csv'))
 bracket_names = [os.path.basename(p) for p in bracket_files]
 N = len(bracket_files)
 
-current_scores = []
-for path in bracket_files:
-    score = 0
-    with open(path, newline='', encoding='utf-8') as f:
-        for row in csv.DictReader(f):
-            key = (row['Round'].strip(), row['Predicted Winner'].strip())
-            if key in actual_winners:
-                score += point_values.get(row['Round'].strip(), 0)
-    current_scores.append(score)
-
-current_scores = np.array(current_scores, dtype=np.int32)  # (N,)
+current_scores = np.array(
+    load_all_scores(bracket_files, actual_winners, point_values),
+    dtype=np.int32,
+)  # (N,)
 
 # ---------------------------------------------------------------------------
 # 2. Define the 11 remaining future games
@@ -100,15 +83,7 @@ game_points = np.array(
 
 SEED_K = 0.80
 
-seed_map = {}
-with open('winners.csv', newline='', encoding='utf-8') as f:
-    for row in csv.DictReader(f):
-        if row['Round'].strip() == 'Round of 64':
-            try:
-                seed_map[row['Team 1'].strip()] = int(row['Team 1 Seed'].strip())
-                seed_map[row['Team 2'].strip()] = int(row['Team 2 Seed'].strip())
-            except (ValueError, KeyError):
-                pass
+seed_map = load_seed_map()
 
 seeds = np.array(
     [seed_map.get(t, 8) for t in all_teams], dtype=np.float64
