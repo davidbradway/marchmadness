@@ -1,43 +1,20 @@
 import csv
-import os
 import glob
+import os
 
-# Load point values from group_scoring.csv
-point_values = {}
-with open('group_scoring.csv', newline='', encoding='utf-8') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        round_name = row['Round'].strip()
-        pts_str = row['Correct Picks'].strip().replace(' pts', '').replace(' pt', '')
-        try:
-            point_values[round_name] = int(pts_str)
-        except ValueError:
-            pass
+from tournament import load_point_values, load_actual_winners, load_all_scores
 
-# Load actual winners keyed by (Round, Winner)
-actual_winners = {}
-with open('winners.csv', newline='', encoding='utf-8') as f:
-    reader = csv.DictReader(f)
-    for row in reader:
-        key = (row['Round'].strip(), row['Winner'].strip())
-        actual_winners[key] = True # We only care about the winner, not the matchup details
+point_values   = load_point_values()
+actual_winners = load_actual_winners()
 
-# Score each bracket file
-results = []
-for path in sorted(glob.glob('brackets/*.csv')):
-    filename = os.path.basename(path)
-    score = 0
-    with open(path, newline='', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            key = (row['Round'].strip(), row['Predicted Winner'].strip())
-            if key in actual_winners:
-                round_name = row['Round'].strip()
-                score += point_values.get(round_name, 0)
-    results.append((filename, score))
+bracket_files = sorted(glob.glob('brackets/*.csv'))
+scores = load_all_scores(bracket_files, actual_winners, point_values)
 
-# Sort by score descending
-results.sort(key=lambda x: x[1], reverse=True)
+results = sorted(
+    zip([os.path.basename(p) for p in bracket_files], scores),
+    key=lambda x: x[1],
+    reverse=True,
+)
 
 # Write standings.csv
 with open('standings.csv', 'w', newline='', encoding='utf-8') as f:
