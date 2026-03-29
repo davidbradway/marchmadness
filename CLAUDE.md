@@ -46,7 +46,7 @@ Single-script ETL pipeline:
 Exhaustive scenario simulation using NumPy vectorization:
 
 1. **Load** current scores from all brackets (same logic as `score_brackets.py`)
-2. **Define** the remaining future games: Elite 8 (4), Final Four (2), Championship (1)
+2. **Define** the remaining future games: pending Elite 8 (2), Final Four (2), Championship (1)
 3. **Build** a win-probability matrix from seeds read out of `winners.csv`: P(A beats B) = seed_B^0.8 / (seed_A^0.8 + seed_B^0.8)
 4. **Enumerate** all 2^N possible outcomes as a bit matrix (N = number of remaining games)
 5. **Weight** each scenario by the product of its per-game win probabilities (path-consistent through the bracket)
